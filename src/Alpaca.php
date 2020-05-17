@@ -2,7 +2,6 @@
 
 namespace Alpaca;
 
-use Carbon\Carbon;
 use GuzzleHttp\Client;
 
 class Alpaca
@@ -670,11 +669,13 @@ class Alpaca
         $qs = [];
 
         if (!is_null($start)) {
-            $qs["start"] = (new Carbon($start))->format("Y-m-d");
+			$datestart=date_create("$start");
+            $qs["start"] = (date_format($datestart,"Y-m-d"));
         }
 
         if (!is_null($end)) {
-            $qs["end"] = (new Carbon($end))->format("Y-m-d");
+			$dateend=date_create("$end");
+            $qs["end"] = (date_format($dateend,"Y-m-d"));
         }
 
         return $this->_request("calendar", $qs);
@@ -732,15 +733,18 @@ class Alpaca
         $qs = [];
 
         if (!is_null($date)) {
-            $qs["date"] = (new Carbon($date))->format("Y-m-d");
+			$datedate=date_create("$date");
+            $qs["date"] = (date_format($datedate,"Y-m-d"));
         }
 
         if (!is_null($until)) {
-            $qs["until"] = (new Carbon($until))->format("Y-m-d");
+			$dateuntil=date_create("$until");
+            $qs["until"] = (date_format($dateuntil,"Y-m-d"));
         }
 
         if (!is_null($after)) {
-            $qs["after"] = (new Carbon($after))->format("Y-m-d");
+			$dateafter=date_create("$after");
+            $qs["after"] = (date_format($dateafter,"Y-m-d"));
         }
 
         if (!is_null($direction)) {
@@ -772,15 +776,18 @@ class Alpaca
         ];
 
         if (!is_null($date)) {
-            $qs["date"] = (new Carbon($date))->format("Y-m-d");
+			$datedate=date_create("$date");
+            $qs["date"] = (date_format($datedate,"Y-m-d"));
         }
 
         if (!is_null($until)) {
-            $qs["until"] = (new Carbon($until))->format("Y-m-d");
+			$dateuntil=date_create("$until");
+            $qs["until"] = (date_format($dateuntil,"Y-m-d"));
         }
 
         if (!is_null($after)) {
-            $qs["after"] = (new Carbon($after))->format("Y-m-d");
+			$dateafter=date_create("$after");
+            $qs["after"] = (date_format($dateafter,"Y-m-d"));
         }
 
         if (!is_null($direction)) {
