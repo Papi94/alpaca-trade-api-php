@@ -2,8 +2,6 @@
 
 namespace Alpaca;
 
-use GuzzleHttp\Client;
-
 class Alpaca
 {
     /**
@@ -59,8 +57,9 @@ class Alpaca
         $this->setPaper($paper);
         $this->setAccessToken($accessToken);
 
-        $this->client = new Client();
+        
     }
+        
 
     /**
      * Set the account key.
@@ -111,6 +110,38 @@ class Alpaca
      *
      * @return string
      */
+	 
+	         public function post($Url, $Variables, $type){
+
+
+			$headers = array(
+    'APCA-API-KEY-ID: '."{$this->key}",
+    'APCA-API-SECRET-KEY: '."{$this->secret}",
+	"Content-Type: "."application/json",
+	"Accept: "."application/json"
+);
+
+var_dump ($headers);
+
+            if(!function_exists("curl_version")) return false;
+            $Handle = curl_init();
+            $useragent="Mozilla/5.0 (Windows; U; Windows NT 6.1; en-US; rv:1.9.2.13) Gecko/20101203 Firefox/3.6.13";
+            curl_setopt($Handle, CURLOPT_USERAGENT, $useragent);
+            curl_setopt($Handle, CURLOPT_URL, $Url);
+			if ($type == "POST"){
+            curl_setopt($Handle, CURLOPT_POST, 1);
+            curl_setopt($Handle, CURLOPT_POSTFIELDS, $Variables);
+			}
+            curl_setopt($Handle, CURLOPT_COOKIE, TRUE);
+            curl_setopt($Handle, CURLOPT_HTTPHEADER , $headers);
+            curl_setopt($Handle, CURLOPT_FOLLOWLOCATION, 1);
+            curl_setopt($Handle, CURLOPT_RETURNTRANSFER, true);
+  
+    
+            return curl_exec($Handle);
+
+        }
+		
     private function _buildUrl($path = "", $queryStrings = [], $domain = null, $version = "v2")
     {
         $queryString = "";
@@ -161,20 +192,7 @@ class Alpaca
      */
     private function _request($path, $queryString = [], $type = "GET", $body = null, $domain = null, $version = "v2")
     {
-        try {
-            $request = [
-                "headers" => [
-                    "Content-Type" => "application/json",
-                    "Accept" => "application/json",
-                ],
-            ];
-
-            if (!is_null($this->accessToken)) {
-                $request["headers"]["Authorization"] = "Bearer {$this->accessToken}";
-            } else {
-                $request["headers"]["APCA-API-KEY-ID"] = "{$this->key}";
-                $request["headers"]["APCA-API-SECRET-KEY"] = "{$this->secret}";
-            }
+ 
 
             if (is_array($body)) {
                 $request["body"] = json_encode($body);
@@ -182,17 +200,11 @@ class Alpaca
                 $request["body"] = $body;
             }
 
-            $response = $this->client->request($type, $this->_buildUrl($path, $queryString, $domain, $version), $request);
+            $response = $this->post($this->_buildUrl($path, $queryString, $domain, $version), $body, $type);
 
-            return new Response($response);
-        } catch (\GuzzleHttp\Exception\TransferException $e) {
-            if ($e->hasResponse()) {
-                return new Response($e->getResponse());
-            } else {
-                throw $e;
-            }
+            return $response;
+
         }
-    }
 
     /**
      * Get the current account.
