@@ -1,3 +1,5 @@
+This is a fork of JeffreyHyer/alpaca-trade-api-php, i needed to remove external dependancies so that i can use this api in PeachPie PHP. Luckily its easy enough to use curl to replace guzzle and i removed the universal date formatter as well. Warning, this might break things for you UK guys, maybe...maybe not, i am not sure. 
+
 # Alpaca PHP SDK
 
 ![Packagist Version](https://img.shields.io/packagist/v/jeffreyhyer/alpaca-trade-api-php?label=Packagist)
@@ -18,59 +20,15 @@ the new methods and new method parameters.
 
 ## Installation
 
-**NOTE**: This package currently requires PHP >= 7.2.5
-
-```shell
-$ composer require jeffreyhyer/alpaca-trade-api-php
-```
+See example.php this fork removes the need for compaser packages. 
 
 ## Usage
 
-From within your PHP application you can access the Alpaca API with
-just a couple of lines:
-
-```php
-<?php
-
-require './vendor/autoload.php';
-
-use Alpaca\Alpaca;
-
-$alpaca = new Alpaca("--KEY--", "--SECRET--");
-
-$positions = $alpaca->getPositions();
-```
+See the example.php
 
 ## OAuth
 
-From `v2.1.0` this package supports authenticating users via OAuth to
-the Alpaca API. For a detailed explanation on the OAuth flow, see
-[the Alpaca Docs](https://docs.alpaca.markets/build-apps_services-with-alpaca/oauth-guide/#integration).
-
-The following methods can be used to request Authorization to access
-an external users Alpaca account and retrieve an access token to make
-API calls on their behalf.
-
-**`getOauthAuthorizeUrl($client_id, $redirect_uri, $scope = "", $state = null)`**
-
-Provide your applications `$client_id` and an authorized/whitelisted
-`$redirect_uri` as well as your desired `$scope` and a random `$state`
-value. This function will return the URL to which you should redirect
-your user to in order to Authorize your application to access their account.
-
-**`getOauthAccessToken($code, $client_id, $client_secret, $redirect_uri)`**
-
-Once the user has authorized your application to access their account, Alpaca
-will redirect the user back to your application (`$redirect_uri`). In the URL
-will be a `code` parameter, you will pass that as the `$code` parameter to this
-function along with your `$client_id` and `$client_secret` and your original
-`$redirect_url`. This function will return an access token that can then be used
-to call the Alpaca API on behalf of that user/account.
-
-To start using the access token call **`setAccessToken($token)`** with the value of the token.
-
-Once authenticated, you can call **`getOauthAccessTokenDetails()`** to
-get the details of the access token (status, validity, etc).
+This fork removes oauth support, i dont need it, shouldnt be too hard to add back in , just a matter of adding an authorization header to pass the bearer token.
 
 ## API
 
