@@ -5,13 +5,6 @@ namespace Alpaca;
 class Alpaca
 {
     /**
-     * The Guzzle instance used for all requests to the Alpaca API
-     *
-     * @var \GuzzleHttp\Client
-     */
-    private $client;
-
-    /**
      * Key ID
      *
      * @var string
@@ -121,7 +114,6 @@ class Alpaca
 	"Accept: "."application/json"
 );
 
-var_dump ($headers);
 
             if(!function_exists("curl_version")) return false;
             $Handle = curl_init();
